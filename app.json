@@ -4,10 +4,10 @@
     "slug": "trimlight-amp-calculator",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/TL_AC.png",
+    "icon": "./Assets/images/TL_SQUARE.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/TL-Splash.png",
+      "image": "./Assets/images/TL-Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,18 +18,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/TL-favicon.png",
+        "foregroundImage": "./Assets/images/TL_SQUARE.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.stevenabolin.trimlightcalculator"
     },
     "web": {
-      "favicon": "./assets/images/TL-favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "Trimlight-amp-calculator 1.0.0"
-      }
+      "favicon": "./Assets/images/TL-favicon.png"
     }
   }
 }
