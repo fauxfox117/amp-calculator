@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Trash2 } from 'lucide-react-native';
 import colors from '../constants/colors';
 import { LightingSystem } from '../types/calculator';
-import { useAppStore } from '../Store/calculatorStore';
+import { useAppStore } from '../store/calculatorStore';
 
 interface SystemCardProps {
   system: LightingSystem;
