@@ -40,7 +40,7 @@ export default function HomeScreen() {
   
   const handleCalculate = () => {
     if (!isFormValid) return;
-    
+
     const system: LightingSystem = {
       id: Date.now().toString(),
       name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
@@ -51,8 +51,9 @@ export default function HomeScreen() {
       date: new Date().toLocaleDateString(),
       lightType,
     };
-    
+
     const calculationResult = calculateAmpRequirement(system);
+    console.log(calculationResult);
     setCalculationData(calculationResult);
   };
   
