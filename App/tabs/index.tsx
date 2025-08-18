@@ -25,8 +25,8 @@ export default function HomeScreen() {
   const [spacing, setSpacing] = useState<'6"' | '9"' | '12"'>('12"');
   const [lineCount, setLineCount] = useState('1');
   const [firstLightDistance, setFirstLightDistance] = useState('');
-  const [lightType, setLightType] = useState<'standard' | '3L'>('standard');
-  
+  const [lightType, setLightType] = useState<'standard' | '3L' | 'globe' | 'soffit'>('standard');
+
   const [calculationData, setCalculationData] = useState<CalculationResult | null>(null);
   const [isFormValid, setIsFormValid] = useState(false);
   
@@ -142,57 +142,108 @@ export default function HomeScreen() {
                   </Text>
                 </TouchableOpacity>
               </View>
-            </View>
-            
-            <View style={styles.spacingContainer}>
-              <Text style={styles.spacingLabel}>Light Spacing</Text>
-              <View style={styles.spacingSelector}>
+              
+              <View style={[styles.lightTypeSelector, { marginTop: 8 }]}>
                 <TouchableOpacity
                   style={[
-                    styles.spacingButton,
-                    spacing === '6"' && styles.spacingButtonActive
+                    styles.lightTypeButton,
+                    lightType === 'globe' && styles.lightTypeButtonActive
                   ]}
-                  onPress={() => setSpacing('6"')}
+                  onPress={() => setLightType('globe')}
                 >
                   <Text style={[
-                    styles.spacingButtonText,
-                    spacing === '6"' && styles.spacingButtonTextActive
+                    styles.lightTypeButtonText,
+                    lightType === 'globe' && styles.lightTypeButtonTextActive
                   ]}>
-                    6"
+                    Globe
                   </Text>
                 </TouchableOpacity>
                 
                 <TouchableOpacity
                   style={[
-                    styles.spacingButton,
-                    spacing === '9"' && styles.spacingButtonActive
+                    styles.lightTypeButton,
+                    lightType === 'soffit' && styles.lightTypeButtonActive
                   ]}
-                  onPress={() => setSpacing('9"')}
+                  onPress={() => setLightType('soffit')}
                 >
                   <Text style={[
-                    styles.spacingButtonText,
-                    spacing === '9"' && styles.spacingButtonTextActive
+                    styles.lightTypeButtonText,
+                    lightType === 'soffit' && styles.lightTypeButtonTextActive
                   ]}>
-                    9"
-                  </Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity
-                  style={[
-                    styles.spacingButton,
-                    spacing === '12"' && styles.spacingButtonActive
-                  ]}
-                  onPress={() => setSpacing('12"')}
-                >
-                  <Text style={[
-                    styles.spacingButtonText,
-                    spacing === '12"' && styles.spacingButtonTextActive
-                  ]}>
-                    12"
+                    Soffit
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
+             {/* Only show spacing for standard and 3L lights */}
+            {(lightType === 'standard' || lightType === '3L') && (
+              <View style={styles.spacingContainer}>
+                <Text style={styles.spacingLabel}>Light Spacing</Text>
+                <View style={styles.spacingSelector}>
+                  <TouchableOpacity
+                    style={[
+                      styles.spacingButton,
+                      spacing === '6"' && styles.spacingButtonActive
+                    ]}
+                    onPress={() => setSpacing('6"')}
+                  >
+                    <Text style={[
+                      styles.spacingButtonText,
+                      spacing === '6"' && styles.spacingButtonTextActive
+                    ]}>
+                      6"
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={[
+                      styles.spacingButton,
+                      spacing === '9"' && styles.spacingButtonActive
+                    ]}
+                    onPress={() => setSpacing('9"')}
+                  >
+                    <Text style={[
+                      styles.spacingButtonText,
+                      spacing === '9"' && styles.spacingButtonTextActive
+                    ]}>
+                      9"
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={[
+                      styles.spacingButton,
+                      spacing === '12"' && styles.spacingButtonActive
+                    ]}
+                    onPress={() => setSpacing('12"')}
+                  >
+                    <Text style={[
+                      styles.spacingButtonText,
+                      spacing === '12"' && styles.spacingButtonTextActive
+                    ]}>
+                      12"
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+            
+            {/* Show info text for globe and soffit lights */}
+            {lightType === 'globe' && (
+              <View style={styles.infoContainer}>
+                <Text style={styles.infoText}>
+                  Globe lights are calculated at approximately 1 light per 2 feet
+                </Text>
+              </View>
+            )}
+            
+            {lightType === 'soffit' && (
+              <View style={styles.infoContainer}>
+                <Text style={styles.infoText}>
+                  Soffit lights are calculated at approximately 1 light per 1.5 feet
+                </Text>
+              </View>
+            )}
             
             <InputField
               label="Total Length"
@@ -399,5 +450,18 @@ const styles = StyleSheet.create({
   },
   resetButtonText: {
     color: colors.text,
+  },
+  infoContainer: {
+    backgroundColor: colors.card,
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.primary,
+  },
+  infoText: {
+    fontSize: 14,
+    color: colors.lightText,
+    lineHeight: 20,
   },
 })

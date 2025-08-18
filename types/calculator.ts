@@ -6,7 +6,7 @@ export interface LightingSystem {
   numberOfLines: number;
   distanceToFirstLight: number;
   date: string;
-  lightType: 'standard' | '3L';
+  lightType: 'standard' | '3L'| 'globe' | 'soffit';
 }
 
 export interface CalculationResult {
