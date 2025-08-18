@@ -3,11 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import colors from '../constants/colors';
 import { CalculationResult } from '../types/calculator';
 
-interface CalculationDisplayProps {
+interface ResultCardProps {
   result: CalculationResult;
 }
 
-export default function CalculationDisplay({ result }: CalculationDisplayProps) {
+export default function ResultCard({ result }: ResultCardProps) {
   return (
     <View style={styles.card}>
       <View style={styles.mainResult}>

@@ -14,7 +14,7 @@ import { useAppStore } from '@/store/calculatorStore';
 import { calculateAmpRequirement } from '@/utils/calculations';
 import colors from '@/constants/colors';
 import InputField from '@/components/InputField';
-import CalculationDisplay from '@/components/ResultCard';
+import ResultCard from '@/components/ResultCard';
 import { LightingSystem, CalculationResult } from '@/types/calculator';
 
 export default function HomeScreen() {
@@ -231,8 +231,7 @@ export default function HomeScreen() {
           
           {calculationData && (
             <View style={styles.resultSection}>
-              <CalculationDisplay result={calculationData} />
-              
+               <ResultCard result={calculationData} />
               <View style={styles.actionButtons}>
                 <TouchableOpacity
                   style={[styles.actionButton, styles.saveButton]}

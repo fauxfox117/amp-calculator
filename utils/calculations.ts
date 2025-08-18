@@ -38,12 +38,12 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
       ampReason = "Standard lighting with 100 or fewer lights per line - no amp line needed";
     }
   } else {
-    // 3L lights: 1 amp line per 50 lights
+    // 3L lights: 1 amp line per 70 lights
     ampLinesNeeded = Math.ceil(lightsPerLine / 70);
     needsAmp = lightsPerLine > 70;
     
     if (needsAmp) {
-      ampReason = `3L lighting with ${lightsPerLine} lights per line requires ${ampLinesNeeded} amp line${ampLinesNeeded > 1 ? 's' : ''} (1 amp per 50 lights)`;
+      ampReason = `3L lighting with ${lightsPerLine} lights per line requires ${ampLinesNeeded} amp line${ampLinesNeeded > 1 ? 's' : ''} (1 amp per 70 lights)`;
     } else {
       ampReason = "3L lighting with 50 or fewer lights per line - no amp line needed";
     }

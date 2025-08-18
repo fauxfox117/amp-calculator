@@ -14,7 +14,7 @@ import { useAppStore } from '@/store/calculatorStore';
 import { calculateAmpRequirement } from '@/utils/calculations';
 import colors from '@/constants/colors';
 import SystemCard from '@/components/SystemCard';
-import CalculationDisplay from '@/components/ResultCard';
+import ResultCard from '@/components/ResultCard';
 import { LightingSystem } from '@/types/calculator';
 
 export default function HistoryScreen() {
@@ -96,7 +96,7 @@ export default function HistoryScreen() {
             </View>
             
             {selectedSystem && (
-              <CalculationDisplay result={calculateAmpRequirement(selectedSystem)} />
+              <ResultCard result={calculateAmpRequirement(selectedSystem)} />
             )}
             
             <View style={styles.systemDetails}>
