@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Trash2 } from 'lucide-react-native';
-import { useAppStore } from '../store/calculatorStore';
-import { calculateAmpRequirement } from '../utils/calculations';
-import colors from '../constants/colors';
-import SystemCard from '../components/SystemCard';
-import ResultCard from '../components/ResultCard';
-import { LightingSystem } from '../types/calculator';
+import { useAppStore } from '../../store/calculatorStore';
+import { calculateAmpRequirement } from '../../utils/calculations';
+import colors from '../../constants/colors';
+import SystemCard from '../../components/SystemCard';
+import ResultCard from '../../components/ResultCard';
+import { LightingSystem } from '../../types/calculator';
 
 export default function HistoryScreen() {
   const { savedSystems, clearSystems } = useAppStore();
