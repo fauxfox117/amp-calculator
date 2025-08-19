@@ -9,6 +9,7 @@ interface InputFieldProps {
   placeholder?: string;
   keyboardType?: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad';
   unit?: string;
+  maxLength?: number;
 }
 
 export default function InputField({
@@ -18,6 +19,7 @@ export default function InputField({
   placeholder,
   keyboardType = 'default',
   unit,
+  maxLength,
 }: InputFieldProps) {
   return (
     <View style={styles.container}>
@@ -29,6 +31,7 @@ export default function InputField({
           onChangeText={onChangeText}
           placeholder={placeholder}
           keyboardType={keyboardType}
+          maxLength={maxLength}
         />
         {unit && <Text style={styles.unit}>{unit}</Text>}
       </View>

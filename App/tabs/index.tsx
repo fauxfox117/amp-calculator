@@ -21,68 +21,109 @@ export default function HomeScreen() {
   const addSystem = useAppStore((state) => state.addSystem);
   
   const [systemName, setSystemName] = useState('');
-  const [length, setLength] = useState('');
+  const [calculationData, setCalculationData] = useState<CalculationResult | null>(null);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [totalLength, setTotalLength] = useState('');
+  const [lineLengths, setLineLengths] = useState<string[]>([]);
   const [spacing, setSpacing] = useState<'6"' | '9"' | '12"'>('12"');
   const [lineCount, setLineCount] = useState('1');
   const [firstLightDistance, setFirstLightDistance] = useState('');
   const [lightType, setLightType] = useState<'standard' | '3L' | 'globe' | 'soffit'>('standard');
-
-  const [calculationData, setCalculationData] = useState<CalculationResult | null>(null);
-  const [isFormValid, setIsFormValid] = useState(false);
   
   useEffect(() => {
-    const valid = 
-      length !== '' && 
-      firstLightDistance !== '';
-    
+    let valid = false;
+    if (Number(lineCount) > 1) {
+      valid = lineLengths.length === Number(lineCount) && lineLengths.every(l => l !== '') && firstLightDistance !== '';
+    } else {
+      valid = totalLength !== '' && firstLightDistance !== '';
+    }
     setIsFormValid(valid);
-  }, [length, firstLightDistance]);
+  }, [totalLength, lineLengths, lineCount, firstLightDistance]);
   
   const handleCalculate = () => {
     if (!isFormValid) return;
 
-    const system: LightingSystem = {
-      id: Date.now().toString(),
-      name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
-      totalLength: Number(length),
-      spacing,
-      numberOfLines: Number(lineCount),
-      distanceToFirstLight: Number(firstLightDistance),
-      date: new Date().toLocaleDateString(),
-      lightType,
-    };
-
+    let system: LightingSystem;
+    if (Number(lineCount) > 1) {
+      // Use sum of lineLengths for totalLength
+      const total = lineLengths.reduce((acc, l) => acc + Number(l), 0);
+      system = {
+        id: Date.now().toString(),
+        name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
+        totalLength: total,
+        spacing,
+        numberOfLines: Number(lineCount),
+        distanceToFirstLight: Number(firstLightDistance),
+        date: new Date().toLocaleDateString(),
+        lightType,
+      };
+    } else {
+      system = {
+        id: Date.now().toString(),
+        name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
+        totalLength: Number(totalLength),
+        spacing,
+        numberOfLines: 1,
+        distanceToFirstLight: Number(firstLightDistance),
+        date: new Date().toLocaleDateString(),
+        lightType,
+      };
+    }
     const calculationResult = calculateAmpRequirement(system);
-    console.log(calculationResult);
     setCalculationData(calculationResult);
   };
   
   const saveSystem = () => {
     if (!calculationData || !isFormValid) return;
     
-    const system: LightingSystem = {
-      id: Date.now().toString(),
-      name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
-      totalLength: Number(length),
-      spacing,
-      numberOfLines: Number(lineCount),
-      distanceToFirstLight: Number(firstLightDistance),
-      date: new Date().toLocaleDateString(),
-      lightType,
-    };
+    // Check if system name is empty
+    if (!systemName.trim()) {
+      Alert.alert(
+        'System Name Required',
+        'Please enter a name for the system before saving.',
+        [{ text: 'OK' }]
+      );
+      return;
+    }
     
+    let system: LightingSystem;
+    if (Number(lineCount) > 1) {
+      const total = lineLengths.reduce((acc, l) => acc + Number(l), 0);
+      system = {
+        id: Date.now().toString(),
+        name: systemName.trim(),  // Remove the fallback default name
+        totalLength: total,
+        spacing,
+        numberOfLines: Number(lineCount),
+        distanceToFirstLight: Number(firstLightDistance),
+        date: new Date().toLocaleDateString(),
+        lightType,
+      };
+    } else {
+      system = {
+        id: Date.now().toString(),
+        name: systemName.trim(),  // Remove the fallback default name
+        totalLength: Number(totalLength),
+        spacing,
+        numberOfLines: 1,
+        distanceToFirstLight: Number(firstLightDistance),
+        date: new Date().toLocaleDateString(),
+        lightType,
+      };
+    }
     addSystem(system);
     Alert.alert('Success', 'System saved successfully');
   };
   
   const resetForm = () => {
-    setSystemName('');
-    setLength('');
-    setSpacing('12"');
-    setLineCount('1');
-    setFirstLightDistance('');
-    setLightType('standard');
-    setCalculationData(null);
+  setSystemName('');
+  setTotalLength('');
+  setLineLengths([]);
+  setSpacing('12"');
+  setLineCount('1');
+  setFirstLightDistance('');
+  setLightType('standard');
+  setCalculationData(null);
   };
   
   return (
@@ -103,10 +144,10 @@ export default function HomeScreen() {
           
           <View style={styles.form}>
             <InputField
-              label="System Name (Optional)"
+              label="System Name (Required)"
               value={systemName}
               onChangeText={setSystemName}
-              placeholder="e.g., Kitchen Lighting"
+              placeholder="e.g., Client's name"
             />
             
             <View style={styles.lightTypeContainer}>
@@ -143,7 +184,12 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
               
-              <View style={[styles.lightTypeSelector, { marginTop: 8 }]}>
+
+              {/*below are soffit(puck/downlights) and globe lights, 
+              logic pending so, commented out until logic is proven */}
+
+
+              {/* <View style={[styles.lightTypeSelector, { marginTop: 8 }]}>
                 <TouchableOpacity
                   style={[
                     styles.lightTypeButton,
@@ -173,7 +219,9 @@ export default function HomeScreen() {
                     Soffit
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
+
+
             </View>
              {/* Only show spacing for standard and 3L lights */}
             {(lightType === 'standard' || lightType === '3L') && (
@@ -227,9 +275,13 @@ export default function HomeScreen() {
                 </View>
               </View>
             )}
-            
+
+
+            {/*below are the options for globe and soffit lights */}
+
             {/* Show info text for globe and soffit lights */}
-            {lightType === 'globe' && (
+
+            {/* {lightType === 'globe' && (
               <View style={styles.infoContainer}>
                 <Text style={styles.infoText}>
                   Globe lights are calculated at approximately 1 light per 2 feet
@@ -243,24 +295,58 @@ export default function HomeScreen() {
                   Soffit lights are calculated at approximately 1 light per 1.5 feet
                 </Text>
               </View>
+            )} */}
+            
+            {/* <InputField
+            //number of lines, if multiple 
+                  label="Number of Lines"
+                  value={lineCount}
+                  onChangeText={text => {
+                    // Allow empty string or numbers 1-9
+                    if (text === '' || (parseInt(text) >= 1 && parseInt(text) <= 9)) {
+                      setLineCount(text);
+                      const count = parseInt(text) || 0;
+                      if (count > 1) {
+                        setLineLengths(Array(count).fill(''));
+                      } else {
+                        setLineLengths([]);
+                      }
+                    }
+                  }}
+                  keyboardType="numeric"
+                  placeholder="Default: 1 (Max: 9)"
+            /> */}
+
+            
+            {Number(lineCount) > 1 ? (
+              <View style={{ marginBottom: 16 }}>
+                <Text style={{ fontWeight: '500', marginBottom: 8 }}>Length of Each Line</Text>
+                {lineLengths.map((val, idx) => (
+                  <InputField
+                    key={idx}
+                    label={`Line ${idx + 1} Length`}
+                    value={val}
+                    onChangeText={text => {
+                      const newArr = [...lineLengths];
+                      newArr[idx] = text;
+                      setLineLengths(newArr);
+                    }}
+                    keyboardType="numeric"
+                    placeholder={`e.g., 50`}
+                    unit="ft"
+                  />
+                ))}
+              </View>
+            ) : (
+              <InputField
+                label="Total Length"
+                value={totalLength}
+                onChangeText={setTotalLength}
+                keyboardType="numeric"
+                placeholder="e.g., 50"
+                unit="ft"
+              />
             )}
-            
-            <InputField
-              label="Total Length"
-              value={length}
-              onChangeText={setLength}
-              keyboardType="numeric"
-              placeholder="e.g., 50"
-              unit="ft"
-            />
-            
-            <InputField
-              label="Number of Lines (Optional)"
-              value={lineCount}
-              onChangeText={setLineCount}
-              keyboardType="numeric"
-              placeholder="Default: 1"
-            />
             
             <InputField
               label="Distance to First Light"
