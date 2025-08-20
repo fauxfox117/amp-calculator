@@ -15,7 +15,7 @@ import { calculateAmpRequirement } from '@/utils/calculations';
 import colors from '@/constants/colors';
 import InputField from '@/components/InputField';
 import ResultCard from '@/components/ResultCard';
-import { LightingSystem, CalculationResult } from '@/types/calculator';
+import { LightingSystem, CalculationResult, LineData } from '@/types/calculator';
 
 export default function HomeScreen() {
   const addSystem = useAppStore((state) => state.addSystem);
@@ -28,7 +28,7 @@ export default function HomeScreen() {
   const [spacing, setSpacing] = useState<'6"' | '9"' | '12"'>('12"');
   const [lineCount, setLineCount] = useState('1');
   const [firstLightDistance, setFirstLightDistance] = useState('');
-  const [lightType, setLightType] = useState<'standard' | '3L' | 'globe' | 'soffit'>('standard');
+  const [lightType, setLightType] = useState<'standard' | '3L'>('standard');
   
   useEffect(() => {
     let valid = false;
@@ -45,7 +45,13 @@ export default function HomeScreen() {
 
     let system: LightingSystem;
     if (Number(lineCount) > 1) {
-      // Use sum of lineLengths for totalLength
+      // Create individual line data for each line
+      const lines: LineData[] = lineLengths.map((length, index) => ({
+        id: `line-${index + 1}`,
+        length: Number(length),
+        distanceToFirstLight: Number(firstLightDistance),
+        spacing
+      }));
       const total = lineLengths.reduce((acc, l) => acc + Number(l), 0);
       system = {
         id: Date.now().toString(),
@@ -55,17 +61,26 @@ export default function HomeScreen() {
         numberOfLines: Number(lineCount),
         distanceToFirstLight: Number(firstLightDistance),
         date: new Date().toLocaleDateString(),
+        lines, // ADD THIS LINE!
         lightType,
       };
     } else {
+      const lines: LineData[] = [{
+        id: 'line-1',
+        length: Number(totalLength),
+        distanceToFirstLight: Number(firstLightDistance),
+        spacing
+      }];
+      
       system = {
         id: Date.now().toString(),
-        name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
+        name: systemName.trim(),
         totalLength: Number(totalLength),
         spacing,
         numberOfLines: 1,
         distanceToFirstLight: Number(firstLightDistance),
         date: new Date().toLocaleDateString(),
+        lines, // ADD THIS LINE
         lightType,
       };
     }
@@ -87,8 +102,18 @@ export default function HomeScreen() {
     }
     
     let system: LightingSystem;
+    
     if (Number(lineCount) > 1) {
+      // Create individual line data for each line
+       const lines: LineData[] = lineLengths.map((length, index) => ({
+        id: `line-${index + 1}`,
+        length: Number(length),
+        distanceToFirstLight: Number(firstLightDistance),
+        spacing
+      }));
+      
       const total = lineLengths.reduce((acc, l) => acc + Number(l), 0);
+
       system = {
         id: Date.now().toString(),
         name: systemName.trim(),  // Remove the fallback default name
@@ -97,6 +122,7 @@ export default function HomeScreen() {
         numberOfLines: Number(lineCount),
         distanceToFirstLight: Number(firstLightDistance),
         date: new Date().toLocaleDateString(),
+        lines, // Add individual line data
         lightType,
       };
     } else {
@@ -297,25 +323,24 @@ export default function HomeScreen() {
               </View>
             )} */}
             
-            {/* <InputField
-            //number of lines, if multiple 
-                  label="Number of Lines"
-                  value={lineCount}
-                  onChangeText={text => {
-                    // Allow empty string or numbers 1-9
-                    if (text === '' || (parseInt(text) >= 1 && parseInt(text) <= 9)) {
-                      setLineCount(text);
-                      const count = parseInt(text) || 0;
-                      if (count > 1) {
-                        setLineLengths(Array(count).fill(''));
-                      } else {
-                        setLineLengths([]);
-                      }
-                    }
-                  }}
-                  keyboardType="numeric"
-                  placeholder="Default: 1 (Max: 9)"
-            /> */}
+            <InputField
+              label="Number of Lines"
+              value={lineCount}
+              onChangeText={text => {
+                // Allow empty string or numbers 1-9
+                if (text === '' || (parseInt(text) >= 1 && parseInt(text) <= 9)) {
+                  setLineCount(text);
+                  const count = parseInt(text) || 0;
+                  if (count > 1) {
+                    setLineLengths(Array(count).fill(''));
+                  } else {
+                    setLineLengths([]);
+                  }
+                }
+              }}
+              keyboardType="numeric"
+              placeholder="Default: 1 (Max: 9)"
+            />
 
             
             {Number(lineCount) > 1 ? (
@@ -550,4 +575,4 @@ const styles = StyleSheet.create({
     color: colors.lightText,
     lineHeight: 20,
   },
-})
+});

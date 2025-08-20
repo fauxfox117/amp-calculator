@@ -6,7 +6,8 @@ import {
   FlatList, 
   TouchableOpacity, 
   Alert,
-  Modal
+  Modal,
+  ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Trash2 } from 'lucide-react-native';
@@ -21,6 +22,8 @@ export default function HistoryScreen() {
   const { savedSystems, clearSystems } = useAppStore();
   const [selectedSystem, setSelectedSystem] = useState<LightingSystem | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  
+  const displaySystems = savedSystems; // Use only real saved systems
   
   const handleSystemPress = (system: LightingSystem) => {
     setSelectedSystem(system);
@@ -45,15 +48,15 @@ export default function HistoryScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <View style={styles.header}>
-        <Text style={styles.title}>Saved Systems</Text>
-        {savedSystems.length > 0 && (
+        <Text style={styles.title}>Saved Systems ({displaySystems.length})</Text>
+        {displaySystems.length > 0 && (
           <TouchableOpacity onPress={handleClearAll} style={styles.clearButton}>
             <Trash2 size={20} color={colors.error} />
           </TouchableOpacity>
         )}
       </View>
       
-      {savedSystems.length === 0 ? (
+      {displaySystems.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No saved systems yet</Text>
           <Text style={styles.emptySubtext}>
@@ -62,7 +65,7 @@ export default function HistoryScreen() {
         </View>
       ) : (
         <FlatList
-          data={savedSystems}
+          data={displaySystems} // Change this from savedSystems to displaySystems
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <SystemCard 
@@ -71,7 +74,9 @@ export default function HistoryScreen() {
             />
           )}
           contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
+          bounces={true}
+          scrollEnabled={true}
         />
       )}
       
@@ -95,40 +100,46 @@ export default function HistoryScreen() {
               </TouchableOpacity>
             </View>
             
-            {selectedSystem && (
-              <ResultCard result={calculateAmpRequirement(selectedSystem)} />
-            )}
-            
-            <View style={styles.systemDetails}>
-              <Text style={styles.detailsTitle}>System Details</Text>
+            <ScrollView 
+              style={styles.modalScrollView}
+              contentContainerStyle={styles.modalScrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              {selectedSystem && (
+                <ResultCard result={calculateAmpRequirement(selectedSystem)} />
+              )}
               
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Light Type:</Text>
-                <Text style={styles.detailValue}>
-                  {selectedSystem?.lightType === 'standard' ? 'Standard' : '3L'}
-                </Text>
+              <View style={styles.systemDetails}>
+                <Text style={styles.detailsTitle}>System Details</Text>
+                
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Light Type:</Text>
+                  <Text style={styles.detailValue}>
+                    {selectedSystem?.lightType === 'standard' ? 'Standard' : '3L'}
+                  </Text>
+                </View>
+                
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Spacing:</Text>
+                  <Text style={styles.detailValue}>{selectedSystem?.spacing}</Text>
+                </View>
+                
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Total Length:</Text>
+                  <Text style={styles.detailValue}>{selectedSystem?.totalLength} ft</Text>
+                </View>
+                
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Number of Lines:</Text>
+                  <Text style={styles.detailValue}>{selectedSystem?.numberOfLines}</Text>
+                </View>
+                
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>Distance to First Light:</Text>
+                  <Text style={styles.detailValue}>{selectedSystem?.distanceToFirstLight} ft</Text>
+                </View>
               </View>
-              
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Spacing:</Text>
-                <Text style={styles.detailValue}>{selectedSystem?.spacing}</Text>
-              </View>
-              
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Total Length:</Text>
-                <Text style={styles.detailValue}>{selectedSystem?.totalLength} ft</Text>
-              </View>
-              
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Number of Lines:</Text>
-                <Text style={styles.detailValue}>{selectedSystem?.numberOfLines}</Text>
-              </View>
-              
-              <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>Distance to First Light:</Text>
-                <Text style={styles.detailValue}>{selectedSystem?.distanceToFirstLight} ft</Text>
-              </View>
-            </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -159,6 +170,7 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 20,
     paddingTop: 0,
+    paddingBottom: 100, // Add more bottom padding to ensure scrolling works
   },
   emptyContainer: {
     flex: 1,
@@ -188,6 +200,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     padding: 20,
     maxHeight: '80%',
+    flex: 1,
+  },
+  modalScrollView: {
+    flex: 1,
+  },
+  modalScrollContent: {
+    paddingBottom: 20,
   },
   modalHeader: {
     flexDirection: 'row',

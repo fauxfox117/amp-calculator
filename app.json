@@ -2,6 +2,7 @@
   "expo": {
     "name": "Trimlight Amp Calculator",
     "slug": "trimlight-amp-calculator",
+    "scheme": "trimlight-amp-calculator",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./Assets/images/TL_SQUARE.png",
@@ -25,6 +26,7 @@
     },
     "web": {
       "favicon": "./Assets/images/TL-favicon.png"
-    }
+    },
+    "plugins": ["expo-router", "expo-web-browser"]
   }
 }

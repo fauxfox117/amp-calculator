@@ -1,3 +1,10 @@
+export interface LineData {
+  id: string;
+  length: number;
+  spacing: '6"' | '9"' | '12"';
+  distanceToFirstLight: number;
+}
+
 export interface LightingSystem {
   id: string;
   name: string;
@@ -5,8 +12,18 @@ export interface LightingSystem {
   spacing: '6"' | '9"' | '12"';
   numberOfLines: number;
   distanceToFirstLight: number;
+  lines?: LineData[]; // New: individual line data
   date: string;
-  lightType: 'standard' | '3L'| 'globe' | 'soffit';
+  lightType: 'standard' | '3L' | 'globe' | 'soffit';
+}
+
+export interface LineResult {
+  lineNumber: number;
+  length: number;
+  lightsPerLine: number;
+  ampsNeeded: number;
+  needsAmp: boolean;
+  ampSplicePositions: number[];
 }
 
 export interface CalculationResult {
@@ -15,4 +32,6 @@ export interface CalculationResult {
   ampsNeeded: number; // Number of amp lines needed per line
   needsAmp: boolean;
   ampReason: string;
+  ampSplicePositions: number[]; // Light numbers where amps should be spliced
+  lineResults?: LineResult[]; // New: individual line results
 }
