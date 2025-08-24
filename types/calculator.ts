@@ -1,5 +1,5 @@
 export interface LineData {
-  id: string;
+  id?: string;
   length: number;
   spacing: '6"' | '9"' | '12"';
   distanceToFirstLight: number;
@@ -26,6 +26,22 @@ export interface LineResult {
   ampSplicePositions: number[];
 }
 
+export interface PowerSupplyInfo {
+  totalWatts: number;
+  minPsuWatts: number;
+  suggestedPsuWatts: number;
+  needsSecondaryPsu: boolean;
+  secondaryPsuWatts?: number;
+  psuRecommendation: string;
+  wattsBreakdown: {
+    standard?: number;
+    threeL?: number;
+    downlights?: number;
+    commercial?: number;
+    globe?: number;
+  };
+}
+
 export interface CalculationResult {
   totalLights: number;
   lightsPerLine: number;
@@ -34,4 +50,5 @@ export interface CalculationResult {
   ampReason: string;
   ampSplicePositions: number[]; // Light numbers where amps should be spliced
   lineResults?: LineResult[]; // New: individual line results
+  powerSupply: PowerSupplyInfo; // New: power supply calculations
 }

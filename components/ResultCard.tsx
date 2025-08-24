@@ -39,6 +39,42 @@ export default function ResultCard({ result }: ResultCardProps) {
       </View>
       
       <View style={styles.divider} />
+       <View style={styles.powerSupplySection}>
+        <Text style={styles.powerSupplyTitle}>Suggested Power Supply</Text>
+        
+        <View style={styles.powerSupplyMain}>
+          <Text style={styles.powerSupplyLabel}>Recommended PSU:</Text>
+          <Text style={styles.powerSupplyValue}>{result.powerSupply.suggestedPsuWatts}W</Text>
+        </View>
+        
+        <View style={styles.powerSupplyDetails}>
+          <View style={styles.powerSupplyRow}>
+            <Text style={styles.powerSupplyDetailLabel}>Total Power Draw:</Text>
+            <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.totalWatts}W</Text>
+          </View>
+          
+          <View style={styles.powerSupplyRow}>
+            <Text style={styles.powerSupplyDetailLabel}>Min PSU (with 25% headroom):</Text>
+            <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.minPsuWatts}W</Text>
+          </View>
+          
+          {result.powerSupply.wattsBreakdown.standard && (
+            <View style={styles.powerSupplyRow}>
+              <Text style={styles.powerSupplyDetailLabel}>Standard Lights:</Text>
+              <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.wattsBreakdown.standard.toFixed(1)}W</Text>
+            </View>
+          )}
+          
+          {result.powerSupply.wattsBreakdown.threeL && (
+            <View style={styles.powerSupplyRow}>
+              <Text style={styles.powerSupplyDetailLabel}>3L Lights:</Text>
+              <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.wattsBreakdown.threeL.toFixed(1)}W</Text>
+            </View>
+          )}
+        </View>
+      </View>
+      
+      <View style={styles.divider} />
       
       <View style={styles.ampStatus}>
         <Text style={styles.ampStatusLabel}>Amplifier Required:</Text>
@@ -300,4 +336,58 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
+  
+  powerSupplySection: {
+    marginBottom: 8,
+  },
+  powerSupplyTitle: {
+    fontSize: 16,
+    color: colors.text,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  powerSupplyMain: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  powerSupplyLabel: {
+    fontSize: 16,
+    color: colors.text,
+    fontWeight: '500',
+  },
+  powerSupplyValue: {
+    fontSize: 20,
+    color: colors.primary,
+    fontWeight: '700',
+  },
+  powerSupplyDetails: {
+    backgroundColor: colors.background,
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  powerSupplyRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  powerSupplyDetailLabel: {
+    fontSize: 14,
+    color: colors.lightText,
+    flex: 1,
+  },
+  powerSupplyDetailValue: {
+    fontSize: 14,
+    color: colors.text,
+    fontWeight: '500',
+  },
+
 });
