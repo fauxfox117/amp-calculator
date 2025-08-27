@@ -131,49 +131,52 @@ function calculateLineAmpRequirement(
     needsAmp = lightsPerLine > lightsPerAmp;
   } else if (lightType === '3L') {
     lightsPerAmp = 70;
-    needsAmp = lightsPerLine > lightsPerAmp;
+    needsAmp = lightsPerLine > 70;
   }
   
-  // Calculate amp splice positions with 40-foot rule
+  // Calculate amp splice positions with 40-light rule
   const ampSplicePositions: number[] = [];
-  if (needsAmp && lightsPerAmp > 0) {
-    // Calculate the distance per light based on spacing
-    const spacingInFeet = spacing === '6"' ? 0.5 : spacing === '9"' ? 0.75 : 1.0;
+  if (needsAmp) {
+    const positions: number [] = [];
     
-    // Calculate how many lights fit in 40 feet
-    const lightsIn40Feet = Math.floor(40 / spacingInFeet);
-    
-    // Start with regular intervals
-    const positions: number[] = [];
-    for (let i = lightsPerAmp; i < lightsPerLine; i += lightsPerAmp) {
-      positions.push(i);
-    }
-    
-    // Check if we need an amp within the last 40 feet
-    const lastAmpPosition = positions.length > 0 ? positions[positions.length - 1] : 0;
-    const lightsFromLastAmp = lightsPerLine - lastAmpPosition;
-    
-    // If the distance from the last amp to the end is more than 40 feet worth of lights,
-    // we need to add another amp
-    if (lightsFromLastAmp > lightsIn40Feet) {
-      // Place the additional amp so that it's within 40 feet of the end
-      const newAmpPosition = lightsPerLine - lightsIn40Feet;
-      
-      // Only add if it's not too close to the previous amp (at least 20 lights apart)
-      if (positions.length === 0 || newAmpPosition - positions[positions.length - 1] >= 20) {
-        positions.push(newAmpPosition);
-      } else {
-        // If too close, replace the last position
-        positions[positions.length - 1] = newAmpPosition;
+    if (lightType === '3L') {
+      // 3L specific logic based on light count
+      if (lightsPerLine > 40 && lightsPerLine <= 80) {
+        // place one amp at midpoint
+        positions.push(Math.floor(lightsPerLine / 2));
+      } else if (lightsPerLine > 80 && lightsPerLine <= 110) {
+        // place 1 amp exactly 40 lights from the end
+        positions.push(lightsPerLine - 40);
+      } else if (lightsPerLine > 110) {
+        // Place 1 amp 40 lights from the end
+        positions.push(lightsPerLine - 40);
+        
+        // Calculate remaining lights and required amps
+        const firstPortion = lightsPerLine - 40;
+        const numSegments = Math.ceil(firstPortion / 70);
+
+        // Evenly distribute amp positions in the remaining portion
+        for (let i = 1; i < numSegments; i++) {
+          const ampPosition = Math.floor((firstPortion / numSegments) * i);
+          positions.unshift(ampPosition); // Add to beginning of array
+        }
+      }
+    } else if (lightType === 'standard') {
+      // Standard lights: every 100 lights
+      for (let i = 100; i < lightsPerLine; i += 100) {
+        positions.push(i);
       }
     }
-    
-    ampSplicePositions.push(...positions);
+
+    ampSplicePositions.push(...positions.sort((a, b) => a - b));
   }
-  
+
   // Calculate actual number of amps needed based on positions
   ampLinesNeeded = ampSplicePositions.length;
-  
+
+  // Calculate strings needed based on lights per line
+  const stringsNeeded = Math.ceil(lightsPerLine / 20);
+
   return {
     lineNumber,
     length,
@@ -181,6 +184,7 @@ function calculateLineAmpRequirement(
     ampsNeeded: ampLinesNeeded,
     needsAmp,
     ampSplicePositions,
+    stringsNeeded,
   };
 }
 
@@ -230,50 +234,48 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
     let lightsPerAmp = 0;
     
     if (system.lightType === 'standard') {
-      // Standard lights: 1 amp line per 100 lights
       lightsPerAmp = 100;
-      needsAmp = lightsPerLine > lightsPerAmp;
+      needsAmp = lightsPerLine > 100;
     } else if (system.lightType === '3L') {
-      // 3L lights: 1 amp line per 70 lights
       lightsPerAmp = 70;
-      needsAmp = lightsPerLine > lightsPerAmp;
+      needsAmp = lightsPerLine > 70; // L3 needs amp if >70 lights
     }
     
-    // Calculate amp splice positions with 40-foot rule
+    // Calculate amp splice positions based on light count and L3 capacity rules
     const ampSplicePositions: number[] = [];
-    if (needsAmp && lightsPerAmp > 0) {
-      // Calculate the distance per light based on spacing
-      const spacingInFeet = system.spacing === '6"' ? 0.5 : system.spacing === '9"' ? 0.75 : 1.0;
-      
-      // Calculate how many lights fit in 40 feet
-      const lightsIn40Feet = Math.floor(40 / spacingInFeet);
-      
-      // Start with regular intervals
+    if (needsAmp) {
       const positions: number[] = [];
-      for (let i = lightsPerAmp; i < lightsPerLine; i += lightsPerAmp) {
-        positions.push(i);
-      }
       
-      // Check if we need an amp within the last 40 feet
-      const lastAmpPosition = positions.length > 0 ? positions[positions.length - 1] : 0;
-      const lightsFromLastAmp = lightsPerLine - lastAmpPosition;
-      
-      // If the distance from the last amp to the end is more than 40 feet worth of lights,
-      // we need to add another amp
-      if (lightsFromLastAmp > lightsIn40Feet) {
-        // Place the additional amp so that it's within 40 feet of the end
-        const newAmpPosition = lightsPerLine - lightsIn40Feet;
-        
-        // Only add if it's not too close to the previous amp (at least 20 lights apart)
-        if (positions.length === 0 || newAmpPosition - positions[positions.length - 1] >= 20) {
-          positions.push(newAmpPosition);
-        } else {
-          // If too close, replace the last position
-          positions[positions.length - 1] = newAmpPosition;
+      if (system.lightType === '3L') {
+        // 3L specific logic based on light count
+        if (lightsPerLine > 40 && lightsPerLine <= 80) {
+          // Place 1 amp at midpoint
+          positions.push(Math.floor(lightsPerLine / 2));
+        } else if (lightsPerLine > 80 && lightsPerLine <= 110) {
+          // Place 1 amp exactly 40 lights from the end
+          positions.push(lightsPerLine - 40);
+        } else if (lightsPerLine > 110) {
+          // Place 1 amp 40 lights from the end
+          positions.push(lightsPerLine - 40);
+          
+          // Calculate remaining lights and required amps
+          const firstPortion = lightsPerLine - 40;
+          const numSegments = Math.ceil(firstPortion / 70);
+
+          // Evenly distribute amp positions in the remaining portion
+          for (let i = 1; i < numSegments; i++) {
+            const ampPosition = Math.floor((firstPortion / numSegments) * i);
+            positions.unshift(ampPosition); // Add to beginning of array
+          }
+        }
+      } else if (system.lightType === 'standard') {
+        // Standard lights: every 100 lights
+        for (let i = 100; i < lightsPerLine; i += 100) {
+          positions.push(i);
         }
       }
       
-      ampSplicePositions.push(...positions);
+      ampSplicePositions.push(...positions.sort((a, b) => a - b));
     }
     
     // Calculate actual number of amps needed based on positions

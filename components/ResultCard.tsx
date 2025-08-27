@@ -30,6 +30,11 @@ export default function ResultCard({ result }: ResultCardProps) {
             <Text style={styles.label}>Lights Per Line:</Text>
             <Text style={styles.value}>{result.lightsPerLine}</Text>
           </View>
+          
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Strings needed:</Text>
+            <Text style={styles.detailValue}>{Math.ceil(result.lightsPerLine / 20)}</Text>
+          </View>
         </>
       )}
       
@@ -108,6 +113,11 @@ export default function ResultCard({ result }: ResultCardProps) {
                   </View>
                   
                   <View style={styles.lineRow}>
+                    <Text style={styles.lineLabel}>Strings:</Text>
+                    <Text style={styles.lineValue}>{lineResult.stringsNeeded}</Text>
+                  </View>
+                  
+                  <View style={styles.lineRow}>
                     <Text style={styles.lineLabel}>Amps Needed:</Text>
                     <Text style={[
                       styles.lineValue,
@@ -142,7 +152,7 @@ export default function ResultCard({ result }: ResultCardProps) {
           <View style={styles.divider} />
           <View style={styles.spliceSection}>
             <Text style={styles.spliceTitle}>Amp Splice Positions:</Text>
-            <Text style={styles.spliceSubtitle}>Install amps after these light numbers (40-foot rule applied)</Text>
+            <Text style={styles.spliceSubtitle}>Install amps after these light numbers (40-light rule applied)</Text>
             <View style={styles.splicePositions}>
               {result.ampSplicePositions.map((position, index) => (
                 <View key={index} style={styles.splicePosition}>
@@ -193,6 +203,20 @@ const styles = StyleSheet.create({
     color: colors.lightText,
   },
   value: {
+    fontSize: 16,
+    color: colors.text,
+    fontWeight: '500',
+  },
+  detailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  detailLabel: {
+    fontSize: 16,
+    color: colors.lightText,
+  },
+  detailValue: {
     fontSize: 16,
     color: colors.text,
     fontWeight: '500',
@@ -336,7 +360,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  
+
   powerSupplySection: {
     marginBottom: 8,
   },
