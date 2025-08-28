@@ -74,3 +74,14 @@ npx expo start
 
 **Input:** 3 lines (150ft, 200ft, 100ft) with 9" spacing, Standard lights  
 **Output:** Line 1: 2 amps, Line 2: 3 amps, Line 3: 1 amp = **6 total amps needed**
+
+
+## Current Working State - August 28, 2025
+
+### Recent Updates:
+- ✅ Restructured the 40-foot rule to be 40 lights instead
+- ✅ Amps distributed evenly with 40-light rule applied
+- ✅ Number of strings needed implemented
+- ✅ Power Supply suggestion is implemented 
+- ✅ Form resets when saving
+
