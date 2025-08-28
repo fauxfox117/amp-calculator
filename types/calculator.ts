@@ -24,6 +24,7 @@ export interface LineResult {
   ampsNeeded: number;
   needsAmp: boolean;
   ampSplicePositions: number[];
+  stringsNeeded: number;
 }
 
 export interface PowerSupplyInfo {
