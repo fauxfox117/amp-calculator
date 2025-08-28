@@ -1,6 +1,11 @@
 import { CalculationResult, LightingSystem, LineResult, PowerSupplyInfo } from '../types/calculator';
 
 export function calculateLightsFromLength(length: number, spacing: '6"' | '9"' | '12"', lightType: 'standard' | '3L' | 'globe' | 'soffit'): number {
+// ==========================================================
+        //OLD LOGIC BELOW THIS LINE//
+// ==========================================================
+{
+
   // // For globe and soffit lights, spacing doesn't apply - calculate based on light type
   // if (lightType === 'globe') {
   //   // Globe lights: approximately 1 light per 2 feet
@@ -22,8 +27,13 @@ export function calculateLightsFromLength(length: number, spacing: '6"' | '9"' |
   // const sectionLength = 7.7;
   
   // // Calculate how many full sections fit in the length
-  // const sections = length / sectionLength;
-  
+  // const sections = length / sectionLength;   
+};
+  // ==========================================================
+        //UPDATED LOGIC BELOW THIS LINE//
+  // ==========================================================
+
+
   // // Calculate total lights (round up to account for partial sections)
   // return Math.ceil(sections * lightsPerSection);
   // Use the new logic from the power supply requirements
@@ -238,10 +248,10 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
       needsAmp = lightsPerLine > 100;
     } else if (system.lightType === '3L') {
       lightsPerAmp = 70;
-      needsAmp = lightsPerLine > 70; // L3 needs amp if >70 lights
+      needsAmp = lightsPerLine > 70; // 3L needs amp if >70 lights
     }
     
-    // Calculate amp splice positions based on light count and L3 capacity rules
+    // Calculate amp splice positions based on light count and 3L capacity rules
     const ampSplicePositions: number[] = [];
     if (needsAmp) {
       const positions: number[] = [];
@@ -287,9 +297,9 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
       const maxLightsText = system.lightType === 'standard' ? '100' : '70';
       
       if (ampLinesNeeded > 0) {
-        ampReason = `${lightTypeText} lighting with ${lightsPerLine} lights per line requires ${ampLinesNeeded} amp line${ampLinesNeeded > 1 ? 's' : ''} (1 amp per ${maxLightsText} lights + 40-foot rule)`;
+        ampReason = `${lightTypeText} lighting with ${lightsPerLine} lights per line requires ${ampLinesNeeded} amp line${ampLinesNeeded > 1 ? 's' : ''} (1 amp per ${maxLightsText} lights + 40-light rule)`;
       } else {
-        ampReason = `${lightTypeText} lighting with ${lightsPerLine} lights per line requires amplification, but positioning optimized for 40-foot rule`;
+        ampReason = `${lightTypeText} lighting with ${lightsPerLine} lights per line requires amplification, but positioning optimized for 40-light rule`;
       }
     } else {
       const lightTypeText = system.lightType === 'standard' ? 'Standard' : '3L';
