@@ -9,6 +9,8 @@ This tool automates the math that installers have traditionally done by hand, sa
 
 ## How It Works
 
+============== OLD LOGIC ================
+
 - Uses known values from the field:
 
   - ~100 lights per amp for standard runs
@@ -21,6 +23,8 @@ This tool automates the math that installers have traditionally done by hand, sa
   - 32 × 10 = 320 lights
   - 320 ÷ 70 = ~4.4 → rounds up to **5 amps required**
 
+==========================================
+
 - The app currently outputs **how many amps are needed** on a run. (Optional logic for telling dealers exactly _where_ to splice is commented out and can be enabled if needed.)
 
 - All calculations run **client-side** — no internet connection required in the field.
@@ -28,7 +32,7 @@ This tool automates the math that installers have traditionally done by hand, sa
 ## Features
 
 - 🔢 **Accurate Amp Calculations** — Automates the light count → amp requirement math installers already do.
-- 📱 **Cross-Platform** — Built with Expo to run on iOS, Android, and the web.
+- 📱 **Cross-Platform** — Built with Expo to run on iOS and Android.
 - ⚡ **Prevents Voltage Drop** — Ensures runs don’t exceed safe thresholds.
 - 🏠 **Optimized for Full House Wraps** — Scales easily for large projects.
 - 🔒 **Offline-First** — Works without connectivity on job sites.
@@ -75,13 +79,12 @@ npx expo start
 **Input:** 3 lines (150ft, 200ft, 100ft) with 9" spacing, Standard lights  
 **Output:** Line 1: 2 amps, Line 2: 3 amps, Line 3: 1 amp = **6 total amps needed**
 
-
 ## Current Working State - August 28, 2025
 
 ### Recent Updates:
+
 - ✅ Restructured the 40-foot rule to be 40 lights instead
 - ✅ Amps distributed evenly with 40-light rule applied
 - ✅ Number of strings needed implemented
-- ✅ Power Supply suggestion is implemented 
+- ✅ Power Supply suggestion is implemented
 - ✅ Form resets when saving
-
