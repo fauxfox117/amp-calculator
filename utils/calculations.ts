@@ -1,6 +1,6 @@
 import { CalculationResult, LightingSystem, LineResult, PowerSupplyInfo } from '../types/calculator';
 
-export function calculateLightsFromLength(length: number, spacing: '6"' | '9"' | '12"', lightType: 'standard' | '3L' | 'globe' | 'soffit'): number {
+export function calculateLightsFromLength(length: number, spacing: '6"' | '9"' | '12"', lightType: 'Residential' | '3L' | 'globe' | 'soffit'): number {
 // ==========================================================
         //OLD LOGIC BELOW THIS LINE//
 // ==========================================================
@@ -17,7 +17,7 @@ export function calculateLightsFromLength(length: number, spacing: '6"' | '9"' |
   //   return Math.ceil(length / 1.5);
   // }
   
-  // // For standard and 3L lights, use spacing-based calculation
+  // // For Residential and 3L lights, use spacing-based calculation
   // // Each piece of trim is 7.7' long
   // // 12" spacing has 8 lights per 7.7'
   // // 9" spacing has 10 lights per 7.7'
@@ -59,15 +59,15 @@ export function calculateLightsFromLength(length: number, spacing: '6"' | '9"' |
   return Math.ceil(length * lightsPerFoot);
 }
 
-export function calculatePowerSupply(totalLights: number, lightType: 'standard' | '3L' | 'globe' | 'soffit'): PowerSupplyInfo {
+export function calculatePowerSupply(totalLights: number, lightType: 'Residential' | '3L' | 'globe' | 'soffit'): PowerSupplyInfo {
   let totalWatts = 0;
   const wattsBreakdown: PowerSupplyInfo['wattsBreakdown'] = {};
   
   // Calculate watts based on light type
-  if (lightType === 'standard') {
-    const standardWatts = totalLights * 0.6;
-    wattsBreakdown.standard = standardWatts;
-    totalWatts += standardWatts;
+  if (lightType === 'Residential') {
+    const ResidentialWatts = totalLights * 0.6;
+    wattsBreakdown.Residential = ResidentialWatts;
+    totalWatts += ResidentialWatts;
   } else if (lightType === '3L') {
     const threeLWatts = totalLights * 0.72;
     wattsBreakdown.threeL = threeLWatts;
@@ -77,20 +77,20 @@ export function calculatePowerSupply(totalLights: number, lightType: 'standard' 
     wattsBreakdown.globe = globeWatts;
     totalWatts += globeWatts;
   } else if (lightType === 'soffit') {
-    // Soffit lights might use similar wattage to standard
-    const standardWatts = totalLights * 0.6;
-    wattsBreakdown.standard = standardWatts;
-    totalWatts += standardWatts;
+    // Soffit lights might use similar wattage to Residential
+    const ResidentialWatts = totalLights * 0.6;
+    wattsBreakdown.Residential = ResidentialWatts;
+    totalWatts += ResidentialWatts;
   }
   
   // Add 25% headroom for minimum PSU size
   const minPsuWatts = Math.ceil(totalWatts * 1.25);
   
-  // Maximum single PSU size is 450W
-  const maxSinglePsuWatts = 450;
+  // Maximum single PSU size is 500W
+  const maxSinglePsuWatts = 500;
 
-  // PSU sizes available: 50W, 100W, 150W, 200W, 250W, 300W, 350W, 450W
-  const commonPsuSizes = [50, 100, 150, 200, 250, 300, 350, 450];
+  // PSU sizes available: 50W, 100W, 200W, 350W, 500W
+  const commonPsuSizes = [50, 100, 200, 350, 500];
 
   let suggestedPsuWatts: number;
   let needsSecondaryPsu = false;
@@ -128,7 +128,7 @@ function calculateLineAmpRequirement(
   lineNumber: number,
   length: number,
   spacing: '6"' | '9"' | '12"',
-  lightType: 'standard' | '3L' | 'globe' | 'soffit'
+  lightType: 'Residential' | '3L' | 'globe' | 'soffit'
 ): LineResult {
   const lightsPerLine = calculateLightsFromLength(length, spacing, lightType);
   
@@ -136,7 +136,7 @@ function calculateLineAmpRequirement(
   let needsAmp = false;
   let lightsPerAmp = 0;
   
-  if (lightType === 'standard') {
+  if (lightType === 'Residential') {
     lightsPerAmp = 100;
     needsAmp = lightsPerLine > lightsPerAmp;
   } else if (lightType === '3L') {
@@ -171,8 +171,8 @@ function calculateLineAmpRequirement(
           positions.unshift(ampPosition); // Add to beginning of array
         }
       }
-    } else if (lightType === 'standard') {
-      // Standard lights: every 100 lights
+    } else if (lightType === 'Residential') {
+      // Residential lights: every 100 lights
       for (let i = 100; i < lightsPerLine; i += 100) {
         positions.push(i);
       }
@@ -217,7 +217,7 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
     const anyLineNeedsAmp = lineResults.some(line => line.needsAmp);
     
     // Create summary reason
-    const lightTypeText = system.lightType === 'standard' ? 'Standard' : '3L';
+    const lightTypeText = system.lightType === 'Residential' ? 'Residential' : '3L';
     const ampReason = `${lightTypeText} lighting system with ${system.numberOfLines} lines requiring ${totalAmpsNeeded} total amp lines`;
     const powerSupply = calculatePowerSupply(totalLights, system.lightType);
   
@@ -242,8 +242,8 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
     let needsAmp = false;
     let ampReason = "";
     let lightsPerAmp = 0;
-    
-    if (system.lightType === 'standard') {
+
+    if (system.lightType === 'Residential') {
       lightsPerAmp = 100;
       needsAmp = lightsPerLine > 100;
     } else if (system.lightType === '3L') {
@@ -278,8 +278,8 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
             positions.unshift(ampPosition); // Add to beginning of array
           }
         }
-      } else if (system.lightType === 'standard') {
-        // Standard lights: every 100 lights
+      } else if (system.lightType === 'Residential') {
+        // Residential lights: every 100 lights
         for (let i = 100; i < lightsPerLine; i += 100) {
           positions.push(i);
         }
@@ -293,8 +293,8 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
     
     // Create reason text
     if (needsAmp) {
-      const lightTypeText = system.lightType === 'standard' ? 'Standard' : '3L';
-      const maxLightsText = system.lightType === 'standard' ? '100' : '70';
+      const lightTypeText = system.lightType === 'Residential' ? 'Residential' : '3L';
+      const maxLightsText = system.lightType === 'Residential' ? '100' : '70';
       
       if (ampLinesNeeded > 0) {
         ampReason = `${lightTypeText} lighting with ${lightsPerLine} lights per line requires ${ampLinesNeeded} amp line${ampLinesNeeded > 1 ? 's' : ''} (1 amp per ${maxLightsText} lights + 40-light rule)`;
@@ -302,8 +302,8 @@ export function calculateAmpRequirement(system: LightingSystem): CalculationResu
         ampReason = `${lightTypeText} lighting with ${lightsPerLine} lights per line requires amplification, but positioning optimized for 40-light rule`;
       }
     } else {
-      const lightTypeText = system.lightType === 'standard' ? 'Standard' : '3L';
-      const maxLightsText = system.lightType === 'standard' ? '100' : '70';
+      const lightTypeText = system.lightType === 'Residential' ? 'Residential' : '3L';
+      const maxLightsText = system.lightType === 'Residential' ? '100' : '70';
       ampReason = `${lightTypeText} lighting with ${maxLightsText} or fewer lights per line - no amp line needed`;
     }
     

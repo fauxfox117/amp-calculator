@@ -63,10 +63,10 @@ export default function ResultCard({ result }: ResultCardProps) {
             <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.minPsuWatts}W</Text>
           </View>
           
-          {result.powerSupply.wattsBreakdown.standard && (
+          {result.powerSupply.wattsBreakdown.residential && (
             <View style={styles.powerSupplyRow}>
-              <Text style={styles.powerSupplyDetailLabel}>Standard Lights:</Text>
-              <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.wattsBreakdown.standard.toFixed(1)}W</Text>
+              <Text style={styles.powerSupplyDetailLabel}>Residential Lights:</Text>
+              <Text style={styles.powerSupplyDetailValue}>{result.powerSupply.wattsBreakdown.residential.toFixed(1)}W</Text>
             </View>
           )}
           

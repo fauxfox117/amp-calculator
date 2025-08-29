@@ -28,7 +28,7 @@ export default function HomeScreen() {
   const [spacing, setSpacing] = useState<'6"' | '9"' | '12"'>('12"');
   const [lineCount, setLineCount] = useState('1');
   const [firstLightDistance, setFirstLightDistance] = useState('');
-  const [lightType, setLightType] = useState<'standard' | '3L'>('standard');
+  const [lightType, setLightType] = useState<'residential' | '3L'>('residential');
   
   useEffect(() => {
     let valid = false;
@@ -149,7 +149,7 @@ export default function HomeScreen() {
   setSpacing('12"');
   setLineCount('1');
   setFirstLightDistance('');
-  setLightType('standard');
+  setLightType('residential');
   setCalculationData(null);
   };
   
@@ -183,15 +183,15 @@ export default function HomeScreen() {
                 <TouchableOpacity
                   style={[
                     styles.lightTypeButton,
-                    lightType === 'standard' && styles.lightTypeButtonActive
+                    lightType === 'residential' && styles.lightTypeButtonActive
                   ]}
-                  onPress={() => setLightType('standard')}
+                  onPress={() => setLightType('residential')}
                 >
                   <Text style={[
                     styles.lightTypeButtonText,
-                    lightType === 'standard' && styles.lightTypeButtonTextActive
+                    lightType === 'residential' && styles.lightTypeButtonTextActive
                   ]}>
-                    Standard
+                    Residential
                   </Text>
                 </TouchableOpacity>
                 
@@ -250,8 +250,8 @@ export default function HomeScreen() {
 
 
             </View>
-             {/* Only show spacing for standard and 3L lights */}
-            {(lightType === 'standard' || lightType === '3L') && (
+             {/* Only show spacing for residential and 3L lights */}
+            {(lightType === 'residential' || lightType === '3L') && (
               <View style={styles.spacingContainer}>
                 <Text style={styles.spacingLabel}>Light Spacing</Text>
                 <View style={styles.spacingSelector}>
