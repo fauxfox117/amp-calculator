@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Trash2 } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import colors from '../constants/colors';
 import { LightingSystem } from '../types/calculator';
 import { useAppStore } from '../store/calculatorStore';
@@ -51,7 +51,7 @@ export default function SystemCard({ system, onPress }: SystemCardProps) {
         onPress={() => removeSystem(system.id)}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
-        <Trash2 size={18} color={colors.error} />
+        <Ionicons name="trash-outline" size={18} color={colors.error} />
       </TouchableOpacity>
     </TouchableOpacity>
   );

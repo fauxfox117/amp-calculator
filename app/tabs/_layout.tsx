@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Calculator, History } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import colors from '@/constants/colors';
 
 export default function TabLayout() {
@@ -20,14 +20,16 @@ export default function TabLayout() {
           color: colors.text,
           fontWeight: '600',
         },
+        headerTitle: 'Amp Calculator',
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Calculator",
+          headerTitle: "Amp Calculator",
           tabBarIcon: ({ color, size }) => (
-            <Calculator size={size} color={color} />
+            <Ionicons name="calculator" size={size} color={color} />
           ),
         }}
       />
@@ -35,8 +37,9 @@ export default function TabLayout() {
         name="history"
         options={{
           title: "Saved Systems",
+          headerTitle: "Amp Calculator",
           tabBarIcon: ({ color, size }) => (
-            <History size={size} color={color} />
+            <Ionicons name="time-outline" size={size} color={color} />
           ),
         }}
       />

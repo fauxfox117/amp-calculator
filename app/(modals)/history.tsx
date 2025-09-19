@@ -10,7 +10,7 @@ import {
   ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Trash2 } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useAppStore } from '@/store/calculatorStore';
 import { calculateAmpRequirement } from '@/utils/calculations';
 import colors from '@/constants/colors';
@@ -51,7 +51,7 @@ export default function HistoryScreen() {
         <Text style={styles.title}>Saved Systems ({displaySystems.length})</Text>
         {displaySystems.length > 0 && (
           <TouchableOpacity onPress={handleClearAll} style={styles.clearButton}>
-            <Trash2 size={20} color={colors.error} />
+            <Ionicons name="trash-outline" size={20} color={colors.error} />
           </TouchableOpacity>
         )}
       </View>
