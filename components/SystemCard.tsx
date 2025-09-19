@@ -24,7 +24,7 @@ export default function SystemCard({ system, onPress }: SystemCardProps) {
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Light Type</Text>
           <Text style={styles.detailValue}>
-            {system.lightType === 'standard' ? 'Standard' : 
+            {system.lightType === 'residential' ? 'residential' : 
              system.lightType === '3L' ? '3L' :
              system.lightType === 'globe' ? 'Globe' : 'Soffit'}
           </Text>

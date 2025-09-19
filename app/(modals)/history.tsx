@@ -115,7 +115,7 @@ export default function HistoryScreen() {
                 <View style={styles.detailRow}>
                   <Text style={styles.detailLabel}>Light Type:</Text>
                   <Text style={styles.detailValue}>
-                    {selectedSystem?.lightType === 'Residential' ? 'Residential' : '3L'}
+                    {selectedSystem?.lightType === 'residential' ? 'residential' : '3L'}
                   </Text>
                 </View>
                 

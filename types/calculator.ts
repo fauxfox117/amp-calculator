@@ -14,7 +14,7 @@ export interface LightingSystem {
   distanceToFirstLight: number;
   lines?: LineData[]; // New: individual line data
   date: string;
-  lightType: 'standard' | '3L' | 'globe' | 'soffit';
+  lightType: 'residential' | '3L' | 'globe' | 'soffit';
 }
 
 export interface LineResult {
@@ -35,7 +35,7 @@ export interface PowerSupplyInfo {
   secondaryPsuWatts?: number;
   psuRecommendation: string;
   wattsBreakdown: {
-    standard?: number;
+    residential?: number;
     threeL?: number;
     downlights?: number;
     commercial?: number;

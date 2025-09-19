@@ -1,10 +1,10 @@
 export default {
   // Default values for calculations
-  standardLightWattage: 60, // watts
+  residentialLightWattage: 60, // watts
   threeLLightWattage: 90, // watts for 3L lights
   globeLightWattage: 45, // watts for globe lights
   soffitLightWattage: 75, // watts for soffit lights
-  standardVoltage: 120, // volts
+  residentialVoltage: 120, // volts
   voltageDrop: 0.05, // 5% voltage drop per 100ft
   safetyFactor: 1.25, // 25% safety margin
   wireGauges: [

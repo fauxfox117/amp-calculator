@@ -164,7 +164,7 @@ export default function HomeScreen() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.title}>Trimlight Amp Calculator</Text>
+          <Text style={styles.title}>Amp Calculator</Text>
           <Text style={styles.subtitle}>
             Calculate amp lines needed for your lighting system
           </Text>
