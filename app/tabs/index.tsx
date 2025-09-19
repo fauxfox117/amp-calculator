@@ -139,7 +139,7 @@ export default function HomeScreen() {
     }
     addSystem(system);
     Alert.alert('Success', 'System saved successfully');
-    resetForm(); // Add this line to reset the form after saving
+    resetForm();
   };
   
   const resetForm = () => {
