@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Trimlight Amp Calculator",
-    "slug": "trimlight-amp-calculator",
-    "scheme": "trimlight-amp-calculator",
+    "name": "Amp Calculator",
+    "slug": "Amp-calculator",
+    "scheme": "Amp-calculator",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./Assets/images/TL_SQUARE.png",
@@ -15,14 +15,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stevenabolin.trimlightcalculator"
+      "bundleIdentifier": "com.stevenabolin.Ampcalculator"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./Assets/images/TL_SQUARE.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.stevenabolin.trimlightcalculator"
+      "package": "com.stevenabolin.Ampcalculator"
     },
     "web": {
       "favicon": "./Assets/images/TL-favicon.png"

@@ -20,12 +20,14 @@ export default function TabLayout() {
           color: colors.text,
           fontWeight: '600',
         },
+        headerTitle:"Amp Calculator",
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Calculator",
+          headerTitle:"Amp Calculator",
           tabBarIcon: ({ color, size }) => (
             <Calculator size={size} color={color} />
           ),
@@ -35,6 +37,7 @@ export default function TabLayout() {
         name="history"
         options={{
           title: "Saved Systems",
+          headerTitle:"Saved Systems",
           tabBarIcon: ({ color, size }) => (
             <History size={size} color={color} />
           ),

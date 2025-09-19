@@ -1,6 +1,6 @@
-# Trimlight Amp Calculator
+# Amp Calculator
 
-The **Trimlight Amp Calculator** is a React Native + TypeScript app (built with Expo) that helps Trimlight installers quickly determine how many amps are required for a given lighting run. The goal is to remove guesswork in the field, prevent dimming or color failures, and standardize installs across all dealers.
+The **Amp Calculator** is a React Native + TypeScript app (built with Expo) that helps permanent lighting installers quickly determine how many amps are required for a given lighting run. The goal is to remove guesswork in the field, prevent dimming or color failures, and standardize installs across all dealers.
 
 ## Why It’s Useful
 
@@ -36,7 +36,7 @@ This tool automates the math that installers have traditionally done by hand, sa
 - ⚡ **Prevents Voltage Drop** — Ensures runs don’t exceed safe thresholds.
 - 🏠 **Optimized for Full House Wraps** — Scales easily for large projects.
 - 🔒 **Offline-First** — Works without connectivity on job sites.
-- 🛠️ **Configurable** — Thresholds and product types can be updated as Trimlight expands its product line.
+- 🛠️ **Configurable** — Thresholds and product types can be updated as the company expands its product line.
 
 ## Tech Stack
 

@@ -20,12 +20,13 @@ export default function TabLayout() {
           color: colors.text,
           fontWeight: '600',
         },
+        headerTitle:"Amp Calculator",
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Trimlight Amp Calculator",
+          title: "Amp Calculator",
           tabBarIcon: ({ color, size }) => (
             <Calculator size={size} color={color} />
           ),
