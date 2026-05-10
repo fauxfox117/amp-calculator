@@ -5,6 +5,8 @@
   "author": "Steven Bolin",
   "license": "MIT",
   "scripts": {
+    "dev": "expo start",
+    "dev:web": "expo start --web",
     "start": "expo start",
     "start:web": "expo start --web",
     "start:tunnel": "expo start --tunnel",
@@ -40,7 +42,7 @@
     "expo-system-ui": "~5.0.6",
     "expo-web-browser": "~14.2.0",
     "hono": "^4.9.2",
-    "lucide-react-native": "^0.475.0",
+    "lucide-react-native": "^1.14.0",
     "nativewind": "^4.1.23",
     "react": "19.0.0",
     "react-dom": "19.0.0",

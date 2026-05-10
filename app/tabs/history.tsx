@@ -18,6 +18,8 @@ import SystemCard from '@/components/SystemCard';
 import ResultCard from '@/components/ResultCard';
 import { LightingSystem } from '@/types/calculator';
 
+const APP_MAX_WIDTH = 980;
+
 export default function HistoryScreen() {
   const { savedSystems, clearSystems } = useAppStore();
   const [selectedSystem, setSelectedSystem] = useState<LightingSystem | null>(null);
@@ -151,6 +153,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+    width: '100%',
+    maxWidth: APP_MAX_WIDTH,
+    alignSelf: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -201,6 +206,9 @@ const styles = StyleSheet.create({
     padding: 20,
     maxHeight: '80%',
     flex: 1,
+    width: '100%',
+    maxWidth: APP_MAX_WIDTH,
+    alignSelf: 'center',
   },
   modalScrollView: {
     flex: 1,

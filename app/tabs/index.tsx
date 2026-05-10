@@ -139,7 +139,6 @@ export default function HomeScreen() {
     }
     addSystem(system);
     Alert.alert('Success', 'System saved successfully');
-    resetForm();
   };
   
   const resetForm = () => {
@@ -191,7 +190,7 @@ export default function HomeScreen() {
                     styles.lightTypeButtonText,
                     lightType === 'residential' && styles.lightTypeButtonTextActive
                   ]}>
-                    Residential
+                    Standard
                   </Text>
                 </TouchableOpacity>
                 

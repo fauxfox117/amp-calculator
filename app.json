@@ -1,31 +1,31 @@
 {
   "expo": {
     "name": "Amp Calculator",
-    "slug": "Amp-calculator",
-    "scheme": "Amp-calculator",
+    "slug": "amp-calculator",
+    "scheme": "amp-calculator",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./Assets/images/AMP_CALC.png",
+    "icon": "./Assets/images/TL_SQUARE.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./Assets/images/AMP_CALC.png",
+      "image": "./Assets/images/TL-Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stevenabolin.Ampcalculator"
+      "bundleIdentifier": "com.stevenabolin.trimlightcalculator"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./Assets/images/AMP_CALC.png",
+        "foregroundImage": "./Assets/images/TL_SQUARE.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.stevenabolin.Ampcalculator"
+      "package": "com.stevenabolin.trimlightcalculator"
     },
     "web": {
-      "favicon": "./Assets/images/favicon.png"
+      "favicon": "./Assets/images/TL-favicon.png"
     },
     "plugins": ["expo-router", "expo-web-browser"]
   }
