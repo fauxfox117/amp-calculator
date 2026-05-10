@@ -1,2 +1,6 @@
 .DS_Store
 node_modules/
+.expo/
+dist/
+dist-web-test/
+dist-web-test-2/
