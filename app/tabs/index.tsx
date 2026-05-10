@@ -12,10 +12,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppStore } from '@/store/calculatorStore';
 import { calculateAmpRequirement } from '@/utils/calculations';
+import { buildLightingSystemFromForm } from '@/utils/systemBuilder';
 import colors from '@/constants/colors';
 import InputField from '@/components/InputField';
 import ResultCard from '@/components/ResultCard';
-import { LightingSystem, CalculationResult, LineData } from '@/types/calculator';
+import { LightingSystem, CalculationResult } from '@/types/calculator';
 
 export default function HomeScreen() {
   const addSystem = useAppStore((state) => state.addSystem);
@@ -43,47 +44,16 @@ export default function HomeScreen() {
   const handleCalculate = () => {
     if (!isFormValid) return;
 
-    let system: LightingSystem;
-    if (Number(lineCount) > 1) {
-      // Create individual line data for each line
-      const lines: LineData[] = lineLengths.map((length, index) => ({
-        id: `line-${index + 1}`,
-        length: Number(length),
-        distanceToFirstLight: Number(firstLightDistance),
-        spacing
-      }));
-      const total = lineLengths.reduce((acc, l) => acc + Number(l), 0);
-      system = {
-        id: Date.now().toString(),
-        name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
-        totalLength: total,
-        spacing,
-        numberOfLines: Number(lineCount),
-        distanceToFirstLight: Number(firstLightDistance),
-        date: new Date().toLocaleDateString(),
-        lines, // ADD THIS LINE!
-        lightType,
-      };
-    } else {
-      const lines: LineData[] = [{
-        id: 'line-1',
-        length: Number(totalLength),
-        distanceToFirstLight: Number(firstLightDistance),
-        spacing
-      }];
-      
-      system = {
-        id: Date.now().toString(),
-        name: systemName.trim(),
-        totalLength: Number(totalLength),
-        spacing,
-        numberOfLines: 1,
-        distanceToFirstLight: Number(firstLightDistance),
-        date: new Date().toLocaleDateString(),
-        lines, // ADD THIS LINE
-        lightType,
-      };
-    }
+    const system = buildLightingSystemFromForm({
+      name: systemName.trim() || `System ${new Date().toLocaleDateString()}`,
+      totalLength,
+      lineLengths,
+      spacing,
+      lineCount,
+      firstLightDistance,
+      lightType,
+    });
+
     const calculationResult = calculateAmpRequirement(system);
     setCalculationData(calculationResult);
   };
@@ -101,42 +71,16 @@ export default function HomeScreen() {
       return;
     }
     
-    let system: LightingSystem;
-    
-    if (Number(lineCount) > 1) {
-      // Create individual line data for each line
-       const lines: LineData[] = lineLengths.map((length, index) => ({
-        id: `line-${index + 1}`,
-        length: Number(length),
-        distanceToFirstLight: Number(firstLightDistance),
-        spacing
-      }));
-      
-      const total = lineLengths.reduce((acc, l) => acc + Number(l), 0);
+    const system = buildLightingSystemFromForm({
+      name: systemName.trim(),
+      totalLength,
+      lineLengths,
+      spacing,
+      lineCount,
+      firstLightDistance,
+      lightType,
+    });
 
-      system = {
-        id: Date.now().toString(),
-        name: systemName.trim(),  // Remove the fallback default name
-        totalLength: total,
-        spacing,
-        numberOfLines: Number(lineCount),
-        distanceToFirstLight: Number(firstLightDistance),
-        date: new Date().toLocaleDateString(),
-        lines, // Add individual line data
-        lightType,
-      };
-    } else {
-      system = {
-        id: Date.now().toString(),
-        name: systemName.trim(),  // Remove the fallback default name
-        totalLength: Number(totalLength),
-        spacing,
-        numberOfLines: 1,
-        distanceToFirstLight: Number(firstLightDistance),
-        date: new Date().toLocaleDateString(),
-        lightType,
-      };
-    }
     addSystem(system);
     Alert.alert('Success', 'System saved successfully');
   };

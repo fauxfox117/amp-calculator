@@ -14,9 +14,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "expo export",
-    "build:web": "expo export --platform web --output-dir dist",
-    "serve": "expo export && npx serve dist",
-    "deploy": "npm run build:web && npx netlify deploy --prod --dir=dist"
+    "serve": "expo export && npx serve dist"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",

@@ -3,25 +3,15 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '@/constants/colors';
 
-const APP_MAX_WIDTH = 980;
-
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        sceneStyle: {
-          width: '100%',
-          maxWidth: APP_MAX_WIDTH,
-          alignSelf: 'center',
-        },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.lightText,
         tabBarStyle: {
           backgroundColor: colors.card,
           borderTopColor: colors.border,
-          width: '100%',
-          maxWidth: APP_MAX_WIDTH,
-          alignSelf: 'center',
         },
         headerStyle: {
           backgroundColor: colors.card,
